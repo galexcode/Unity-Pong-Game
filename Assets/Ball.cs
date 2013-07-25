@@ -5,13 +5,18 @@ public class Ball : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        float initialVelocity = 700.0f;
+        float xVel = Random.value;
+        float zVel = Random.value;
 
-        /*
-        rigidbody.velocity = new Vector3(1.0f,
-                                         0.0f,
-                                         0.0f);
-        */
-        rigidbody.AddForce(new Vector3(500, 0, 500), ForceMode.Impulse);
+        transform.position = new Vector3(0, 0, 0);
+
+        Vector3 baseVector = new Vector3(xVel, 0, zVel);
+        Vector3 startVector = initialVelocity * baseVector.normalized;
+
+        rigidbody.AddForce(
+            startVector,
+            ForceMode.Impulse);
     }
     
     // Update is called once per frame
@@ -20,48 +25,21 @@ public class Ball : MonoBehaviour {
     }
 
     void FixedUpdate () {
-        //rigidbody.velocity = rigidbody.velocity.normalized * 500.0f;
     }
     
     void OnCollisionEnter(Collision collision) {
         if (collision.collider.name == "WallLeft") {
-            
+            GameObject camera = GameObject.Find("Main Camera");
+            GameGUI gui = camera.GetComponent<GameGUI>();
+            gui.IncLeftScore();
+            this.Start();
         }
 
         else if (collision.collider.name == "WallRight") {
-            
+            GameObject camera = GameObject.Find("Main Camera");
+            GameGUI gui = camera.GetComponent<GameGUI>();
+            gui.IncRightScore();
+            this.Start(); 
         }
-        
-        else if (collision.collider.name == "WallTop") {
-            /*
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x,
-                                             rigidbody.velocity.y,
-                                             rigidbody.velocity.z * -1.0f); 
-            */
-        }
-        
-        else if (collision.collider.name == "WallBottom") {
-            /*
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x,
-                                             rigidbody.velocity.y,
-                                             rigidbody.velocity.z * -1.0f);
-            */
-        }
-        
-        else if (collision.collider.name == "PaddleLeft") {
-            /*
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x * -1.0f,
-                                             rigidbody.velocity.y,
-                                             rigidbody.velocity.z);
-            */
-        }
-         
-        else if (collision.collider.name == "PaddleRight") {
-            /*
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x * -1.0f,
-                                             rigidbody.velocity.y,
-           */ 
-        }
-
     }
 }
